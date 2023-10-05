@@ -4,14 +4,14 @@
  */
 exports.up = async function (knex) {
   await knex.schema.createTable('issues', (table) => {
-    table.integer('id').primary()
+    table.increments('id').primary()
     table.string('title').notNull()
     table.string('description').notNull()
     table.enu('status', ['open', 'pending', 'close']).notNullable().defaultTo('open')
     table.enu('priority', ['low', 'medium', 'high']).notNullable().defaultTo('medium')
     table.dateTime('deadline')
     table.dateTime('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP')).notNullable()
-    table.dateTime('updatedAt').defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')).notNullable()
+    table.dateTime('updatedAt').defaultTo(knex.raw('CURRENT_TIMESTAMP')).notNullable()
   })
 
   // const triggerFunction = `

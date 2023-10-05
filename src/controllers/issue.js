@@ -1,5 +1,5 @@
 'use strict'
-const issueModel = require('../models/issue')
+// const issueModel = require('../models/issue')
 
 const getById = (req, res) => {}
 
