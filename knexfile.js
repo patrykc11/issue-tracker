@@ -16,10 +16,10 @@ module.exports = {
     },
     migrations: {
       tableName: 'migrations',
-      directory: '../models/migrations'
+      directory: './src/models/migrations'
     },
     seeds: {
-      directory: '../models/seeds'
+      directory: './src/models/seeds'
     },
     ...knexSnakeCaseMappers()
   },
