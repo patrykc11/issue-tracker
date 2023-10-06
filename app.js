@@ -13,6 +13,9 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('./swagger')
 const issue = require('./src/routes/issue')
 
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+
 app.use(helmet())
 app.use(express.json())
 app.use(cors())
@@ -20,6 +23,10 @@ app.use(cors())
 if (['development', 'dev', 'develop', 'test'].includes(process.env.NODE_ENV)) {
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 }
+
+app.get('/', (req, res) => {
+  res.render('index')
+})
 
 app.use('/issue', issue)
 

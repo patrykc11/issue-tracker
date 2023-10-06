@@ -54,7 +54,7 @@ const getAllWithStatus = async (req, res, next) => {
 
 const addIssue = async (req, res, next) => {
   try {
-    res.status(200).json(await issueService.createIssue(req.body))
+    res.status(201).json(await issueService.createIssue(req.body))
   } catch (err) {
     next(err)
   }
