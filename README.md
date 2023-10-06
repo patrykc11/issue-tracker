@@ -74,8 +74,8 @@ Tests for services use chai-http. Run test with:
 ```
 $ npm run test
 ```
+### Contact
 
+---
 
-Author
-Patryk Cebo
-patrykcebo11@gmail.com
+Patryk Cebo, patrykcebo11@gmail.com
