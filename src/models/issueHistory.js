@@ -5,7 +5,7 @@ Model.knex(knex)
 
 class IssueHistory extends Model {
   static get tableName() {
-    return 'issue-history'
+    return 'issueHistory'
   }
 
   static getIssueHistory(issueId) {

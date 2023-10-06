@@ -24,25 +24,33 @@ class Issue extends Model {
     return this.query().where({ priority })
   }
 
-  static updateStatus(id, status) {
-    return this.query()
-      .findById(id)
-      .patch({
-        status,
-        updatedAt: knex.fn.now()
-      })
-      .returning('*')
+  static async updateStatus(id, status) {
+    try {
+      return await this.query()
+        .findById(id)
+        .patch({
+          status,
+          updatedAt: knex.fn.now()
+        })
+        .returning('*')
+    } catch (err) {
+      return {}
+    }
   }
 
-  static createIssue(issue) {
-    return this.query()
-      .insert({
-        title: issue.title,
-        description: issue.description,
-        priority: issue.priority,
-        deadline: issue.deadline
-      })
-      .skipUndefined()
+  static async createIssue(issue) {
+    try {
+      return await this.query()
+        .insert({
+          title: issue.title,
+          description: issue.description,
+          priority: issue.priority,
+          deadline: issue.deadline
+        })
+        .skipUndefined()
+    } catch (err) {
+      return {}
+    }
   }
 }
 

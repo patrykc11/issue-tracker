@@ -67,7 +67,7 @@ const changeStatus = async (req, res, next) => {
       req.body.status
     )
     if (!changedIssue) {
-      handleError(`Issue with id ${req.params.id} does not exist`, 404)
+      handleError(`Issue with id ${req.params.id} does not exist or forbidden status`, 404)
     }
 
     res.status(200).json(changedIssue)
