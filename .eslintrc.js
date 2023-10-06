@@ -9,7 +9,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2017
   },
-  ignorePatterns: ['/test', 'test.js'],
+  ignorePatterns: ['/test', 'test.js', 'knexfile.js'],
   rules: {
     'no-control-regex': 0,
     'no-unused-expressions': 0,

@@ -14,27 +14,56 @@ exports.up = async function (knex) {
     table.dateTime('updatedAt').defaultTo(knex.raw('CURRENT_TIMESTAMP')).notNullable()
   })
 
-  // const triggerFunction = `
-  //   CREATE OR REPLACE FUNCTION delete_old_files_function()
-  //   RETURNS TRIGGER AS $$
-  //   BEGIN
-  //     DELETE FROM second_stream_files_locations
-  //     WHERE timestamp < (EXTRACT(EPOCH FROM NOW())::bigint - (25 * 3600));
-  //     RETURN NEW;
-  //   END;
-  //   $$ LANGUAGE plpgsql;
-  // `
-  // await knex.raw(triggerFunction)
+  const triggerCheckStatusFunction = `
+    CREATE OR REPLACE FUNCTION check_status()
+    RETURNS TRIGGER AS $$
+    BEGIN
+      IF OLD.status = 'pending' AND NEW.status = 'open' THEN
+        RAISE EXCEPTION 'Can not change from pending to open.';
+      ELSIF OLD.status = 'close' AND NEW.status IN ('open', 'pending') THEN
+        RAISE EXCEPTION 'Can not change from close to open or pending.';
+      END IF;
+      RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+  `
+  await knex.raw(triggerCheckStatusFunction)
 
-  // const triggerName = 'delete_old_files_trigger'
-  // const tableName = 'second_stream_files_locations'
-  // const insertTriggerQuery = `
-  //   CREATE TRIGGER ${triggerName}
-  //   AFTER INSERT ON ${tableName}
-  //   FOR EACH ROW
-  //   EXECUTE FUNCTION delete_old_files_function();
-  // `
-  // await knex.raw(insertTriggerQuery)
+  const insertTriggerCheckStatusQuery = `
+    CREATE TRIGGER check_before_status_update
+    BEFORE UPDATE ON issues
+    FOR EACH ROW
+    EXECUTE FUNCTION check_status();
+  `
+  await knex.raw(insertTriggerCheckStatusQuery)
+
+  const triggerUpdateIssueFunction = `
+    CREATE OR REPLACE FUNCTION update_issue_history()
+    RETURNS TRIGGER AS $$
+    BEGIN
+      INSERT INTO issue_history (issue_id, status, updated_at)
+      VALUES (NEW.id, NEW.status, NOW());
+      RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+  `
+  await knex.raw(triggerUpdateIssueFunction)
+
+  const insertTriggerUpdateIssueQuery = `
+    CREATE TRIGGER update_issue_history_after_update
+    AFTER UPDATE ON issues
+    FOR EACH ROW
+    EXECUTE FUNCTION update_issue_history();
+  `
+  await knex.raw(insertTriggerUpdateIssueQuery)
+
+  const insertTriggerInsertIssueQuery = `
+    CREATE TRIGGER update_issue_history_after_insert
+    AFTER INSERT ON issues
+    FOR EACH ROW
+    EXECUTE FUNCTION update_issue_history();
+  `
+  await knex.raw(insertTriggerInsertIssueQuery)
 }
 
 /**
