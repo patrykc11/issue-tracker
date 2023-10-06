@@ -13,10 +13,12 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('./swagger')
 const issue = require('./src/routes/issue')
 
+app.use(express.static(path.join(__dirname, 'views')))
+
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
-app.use(helmet())
+app.use(helmet({ contentSecurityPolicy: false }))
 app.use(express.json())
 app.use(cors())
 

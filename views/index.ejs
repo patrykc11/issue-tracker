@@ -1,0 +1,128 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha512-3BBFWr73Xrf8GRjO+0pl0cbVwESBvg3ovnuCXpoqOkC/mkt/hTkFtutUPrwRz8eLySYvy5v1daulkyUZYvH8jw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+  <h1>Issue Tracker</h1>
+
+  <!-- Formularz tworzenia zgłoszenia -->
+  <form id="createIssueForm" class="issue-form">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required>
+
+    <label for="priority">Priority:</label>
+    <select id="priority" name="priority">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline" name="deadline">
+
+    <button type="button" onclick="createIssue()">Create Issue</button>
+  </form>
+  <div id="issue-details" class="issue-details"></div>
+  <ul id="issues-list" class="issues-list">
+  </ul>
+
+  <script>
+    async function fetchAndRenderIssues() {
+      try {
+        const response = await axios.get('/issue/all');
+        const issues = response.data;
+  
+        const issuesList = document.getElementById('issues-list');
+        issuesList.innerHTML = '';
+  
+        issues.forEach((issue) => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `
+            <h2>${issue.title}</h2>
+            <p>${issue.description}</p>
+            <p>Status: ${issue.status}</p>
+            <select id="status-${issue.id}">
+              <option value="open" ${issue.status === 'open' ? 'selected' : ''}>Open</option>
+              <option value="pending" ${issue.status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="close" ${issue.status === 'close' ? 'selected' : ''}>Close</option>
+            </select>
+            <button onclick="changeStatus('${issue.id}')">Change Status</button>
+            <button onclick="showIssueDetails('${issue.id}')">Show Details</button>
+          `;
+          issuesList.appendChild(listItem);
+        });
+      } catch (error) {
+        console.error('Error fetching issues:', error);
+      }
+    }
+  
+    async function changeStatus(issueId) {
+      try {
+        const newStatus = document.getElementById(`status-${issueId}`).value;
+        await axios.patch(`/issue/${issueId}/change-status`, { status: newStatus });
+        // Optionally, you can re-fetch and re-render the updated list of issues
+        fetchAndRenderIssues();
+      } catch (error) {
+        console.error('Error changing status:', error);
+      }
+    }
+  
+    async function createIssue() {
+      try {
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const priority = document.getElementById('priority').value;
+        const deadline = document.getElementById('deadline').value;
+
+        const response = await axios.post('/issue', {
+          title,
+          description,
+          priority,
+          deadline,
+        });
+
+        // Optionally, you can re-fetch and re-render the updated list of issues
+        fetchAndRenderIssues();
+      } catch (error) {
+        console.error('Error creating issue:', error);
+      }
+    }
+
+    async function showIssueDetails(issueId) {
+      try {
+        const response = await axios.get(`/issue/${issueId}`);
+        const response2 = await axios.get(`/issue/${issueId}/history`);
+        const issueDetails = response.data;
+        const issueHistory= response2.data;
+
+        const issueDetailsContainer = document.getElementById('issue-details');
+        issueDetailsContainer.innerHTML = `
+          <h2>${issueDetails.title}</h2>
+          <p>${issueDetails.description}</p>
+          <p>Status: ${issueDetails.status}</p>
+          <p>Priority: ${issueDetails.priority}</p>
+          <p>Deadline: ${issueDetails.deadline}</p>
+          <p>Created at: ${issueDetails.createdAt}</p>
+          <p>History: ${JSON.stringify(issueHistory)} </p>
+
+        `;
+      } catch (error) {
+        console.error('Error fetching issue details:', error);
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', fetchAndRenderIssues);
+  </script>
+</body>
+</html>
+
