@@ -370,6 +370,16 @@ router.get(
  *                updatedAt:
  *                  type: string
  *                  example: 2023-10-06T00:09:01.963Z
+ *       400:
+ *         description: Create issue error
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: Cannot create issue.
  *       422:
  *         description: Validation error
  *         content:
@@ -460,7 +470,7 @@ router.post(
  *                updatedAt:
  *                  type: string
  *                  example: 2023-10-06T00:09:01.963Z
- *       404:
+ *       403:
  *         description: Issues not found
  *         content:
  *          application/json:
@@ -469,7 +479,7 @@ router.post(
  *              properties:
  *                message:
  *                  type: string
- *                  example: No issues with id
+ *                  example: Issue with id 24 does not exist or forbidden status.
  *       422:
  *         description: Validation error
  *         content:
