@@ -23,7 +23,7 @@ const createIssue = async (issue) => {
 }
 
 const updateIssueStatus = async (id, status) => {
-  return issueModel.updateStatus(id, status)[0] || {}
+  return issueModel.updateStatus(id, status) || {}
 }
 
 module.exports = {

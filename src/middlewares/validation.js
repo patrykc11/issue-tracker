@@ -13,9 +13,12 @@ const validatePostIssueMiddleware = (req, res, next) => {
   if (validation.error) {
     res
       .status(422)
-      .json({ message: 'Invalid issue data. Please check the provided fields.' })
+      .json({
+        message: 'Invalid issue data. Please check the provided fields.'
+      })
+  } else {
+    next()
   }
-  next()
 }
 
 const validatePatchStatusMiddleware = (req, res, next) => {
@@ -24,39 +27,37 @@ const validatePatchStatusMiddleware = (req, res, next) => {
   })
   const validation = schema.validate(req.body)
   if (validation.error) {
-    res
-      .status(422)
-      .json({
-        message: 'Invalid status value. Allowed values are "pending" or "close".'
-      })
+    res.status(422).json({
+      message: 'Invalid status value. Allowed values are "pending" or "close".'
+    })
+  } else {
+    next()
   }
-  next()
 }
 
 const validateIssueIdMiddleware = (req, res, next) => {
   const schema = joi.number().required()
   const validation = schema.validate(req.params.id)
   if (validation.error) {
-    res
-      .status(422)
-      .json({
-        message: 'Invalid issue id value. Allowed values are numbers.'
-      })
+    res.status(422).json({
+      message: 'Invalid issue id value. Allowed values are numbers.'
+    })
+  } else {
+    next()
   }
-  next()
 }
 
 const validateIssueStatusMiddleware = (req, res, next) => {
   const schema = joi.string().valid('open', 'pending', 'close').required()
   const validation = schema.validate(req.params.status)
   if (validation.error) {
-    res
-      .status(422)
-      .json({
-        message: 'Invalid status value. Allowed values are "open", "pending" or "close".'
-      })
+    res.status(422).json({
+      message:
+        'Invalid status value. Allowed values are "open", "pending" or "close".'
+    })
+  } else {
+    next()
   }
-  next()
 }
 
 module.exports = {

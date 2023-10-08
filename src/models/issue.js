@@ -40,14 +40,12 @@ class Issue extends Model {
 
   static async createIssue(issue) {
     try {
-      return await this.query()
-        .insert({
-          title: issue.title,
-          description: issue.description,
-          priority: issue.priority,
-          deadline: issue.deadline
-        })
-        .skipUndefined()
+      Object.keys(issue).forEach((key) => {
+        if (issue[key] === undefined) {
+          delete issue[key]
+        }
+      })
+      return await this.query().insert(issue).returning('*')
     } catch (err) {
       return {}
     }
