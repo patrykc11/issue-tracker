@@ -69,13 +69,11 @@ $ npx knex seed:run
 
 ---
 
+Frontend address: `http://address:port/
 Run server:
 
 ```
 $ npm run start
-
-
-Frontend address: `http://address:port/
 
 
 ### Tests
@@ -86,7 +84,8 @@ Tests for services use chai-http. Run test with:
 
 ```
 $ npm run test
-```
+
+
 ### Contact
 
 ---
