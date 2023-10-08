@@ -65,6 +65,19 @@ Initial seeding of database with data `src/models/seeds/`:
 $ npx knex seed:run
 ```
 
+### Run the app
+
+---
+
+Run server:
+
+```
+$ npm run start
+
+
+Frontend address: `http://address:port/
+
+
 ### Tests
 
 ---
