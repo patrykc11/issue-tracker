@@ -74,7 +74,7 @@ Run server:
 
 ```
 $ npm run start
-
+```
 
 ### Tests
 
@@ -84,7 +84,7 @@ Tests for services use chai-http. Run test with:
 
 ```
 $ npm run test
-
+```
 
 ### Contact
 
