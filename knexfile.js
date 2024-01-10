@@ -21,6 +21,10 @@ module.exports = {
     seeds: {
       directory: './src/models/seeds'
     },
+    pool: {
+      min: 2,
+      max: 10
+    },
     ...knexSnakeCaseMappers()
   },
   development: {
@@ -38,6 +42,10 @@ module.exports = {
     },
     seeds: {
       directory: './src/models/seeds'
+    },
+    pool: {
+      min: 2,
+      max: 10, // Zwiększ tę wartość, aby zwiększyć rozmiar puli połączeń
     },
     ...knexSnakeCaseMappers()
   }

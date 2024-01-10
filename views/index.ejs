@@ -39,7 +39,7 @@
   <script>
     async function fetchAndRenderIssues() {
       try {
-        const response = await axios.get('/issue/all');
+        const response = await axios.get('/issues/all');
         const issues = response.data;
   
         const issuesList = document.getElementById('issues-list');
@@ -69,7 +69,7 @@
     async function changeStatus(issueId) {
       try {
         const newStatus = document.getElementById(`status-${issueId}`).value;
-        await axios.patch(`/issue/${issueId}/change-status`, { status: newStatus });
+        await axios.patch(`/issues/${issueId}/change-status`, { status: newStatus });
         // Optionally, you can re-fetch and re-render the updated list of issues
         fetchAndRenderIssues();
       } catch (error) {
@@ -84,7 +84,7 @@
         const priority = document.getElementById('priority').value;
         const deadline = document.getElementById('deadline').value;
 
-        const response = await axios.post('/issue', {
+        const response = await axios.post('/issues', {
           title,
           description,
           priority,
@@ -100,8 +100,8 @@
 
     async function showIssueDetails(issueId) {
       try {
-        const response = await axios.get(`/issue/${issueId}`);
-        const response2 = await axios.get(`/issue/${issueId}/history`);
+        const response = await axios.get(`/issues/${issueId}`);
+        const response2 = await axios.get(`/issues/${issueId}/history`);
         const issueDetails = response.data;
         const issueHistory= response2.data;
 

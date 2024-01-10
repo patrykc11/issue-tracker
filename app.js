@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
   res.render('index')
 })
 
-app.use('/issue', issue)
+app.use('/issues', issue)
 
 app.use((err, _req, res, _next) => {
   const errStatus = err.statusCode || 500
