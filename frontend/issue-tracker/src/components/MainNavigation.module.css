@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: rgb(203, 66, 66);
+}
+
+ul {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+}
+
+.button {
+  color: #252525;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background-color: #007bff;
+  width: 145px;
+  height: 46px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #01cbbd;
+  transform: scale(1.01);
+  transition: 0.3s;
+}
