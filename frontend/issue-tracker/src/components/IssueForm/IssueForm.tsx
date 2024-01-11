@@ -1,9 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import classes from "./IssueForm.module.css";
-
-interface IssueFormProps {
-  onSubmit: (formData: IssueFormData) => void;
-}
+import { useNavigate } from 'react-router-dom';
 
 export interface IssueFormData {
   title: string;
@@ -12,13 +9,70 @@ export interface IssueFormData {
   deadline: string;
 }
 
-const IssueForm: React.FC<IssueFormProps> = ({ onSubmit }) => {
+
+
+const IssueForm: React.FC= () => {
   const [formData, setFormData] = useState<IssueFormData>({
     title: '',
     description: '',
     priority: 'low',
     deadline: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
+  const navigate = useNavigate();
+
+  const mapFormData = (formData: IssueFormData) => {
+    console.log(formData.deadline);
+
+    const data = {
+      title: formData.title,
+      description: formData.description,
+      priority: formData.priority,
+      deadline: convertStringToDate(formData.deadline)
+    }
+
+    return data;
+  }
+
+  const onSubmit = (formData: IssueFormData) => {
+    const data = mapFormData(formData);
+
+    setLoading(true);
+
+    fetch('http://34.0.241.201:3000/issues/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => {
+      if(!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+      return response.json()
+    })
+    .then((data) => {
+      setFormData({
+        title: '',
+        description: '',
+        priority: 'low',
+        deadline: '',
+      });
+
+      navigate('/issues')
+    })
+    .catch(error => {
+      setError(error.message);
+      setLoading(false);
+    })
+  }
+
+  const convertStringToDate = (dateString: string): Date | null => {
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? null : date;
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

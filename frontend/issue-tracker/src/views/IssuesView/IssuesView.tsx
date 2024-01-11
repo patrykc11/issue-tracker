@@ -9,7 +9,7 @@ const IssuesView: React.FC = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch('http://localhost:3000/issues/all')
+    fetch('http://34.0.241.201:3000/issues/all')
     .then(response => {
       if(!response.ok) {
         throw new Error('Something went wrong!');
@@ -37,7 +37,7 @@ const IssuesView: React.FC = () => {
             <p className={classes.subtitle}>{result.description}</p>
             <p>priority: {result.priority}</p>
             <p>status: {result.status}</p>
-            <p>deadline: {result.deadline && result.deadline.toLocaleDateString()}</p>
+            <p>deadline: {result.deadline && new Date(result.deadline).toLocaleDateString()}</p>
           </div>
         )
       })}
