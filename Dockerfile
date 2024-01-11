@@ -8,4 +8,4 @@ RUN npm install --only=development
 
 COPY . .
 
-CMD ["npm", "run", "start:db"]
+# CMD ["npm", "run", "start:db"]

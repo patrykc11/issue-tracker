@@ -57,7 +57,7 @@ describe('Issue model tests', () => {
     const newIssue = {
       title: 'New Issue',
       description: 'Description of the new issue',
-      priority: 'medium',
+      priority: 'low',
       deadline: new Date()
     }
     const createdIssue = await Issue.createIssue(newIssue)
