@@ -40,7 +40,7 @@ const IssueForm: React.FC= () => {
 
     setLoading(true);
 
-    fetch('http://34.0.241.201:3000/issues/', {
+    fetch('http://34.116.174.69/issues/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
