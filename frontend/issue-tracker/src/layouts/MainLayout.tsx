@@ -1,5 +1,5 @@
 import MainNavigation from "../components/MainNavigation";
-import classes from "./mainLayout.module.css";
+import classes from "./MainLayout.module.css";
 import { Outlet } from 'react-router-dom';
 
 const MainLayout: React.FC = () => {
