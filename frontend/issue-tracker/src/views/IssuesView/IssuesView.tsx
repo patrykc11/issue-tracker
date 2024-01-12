@@ -41,6 +41,8 @@ const IssuesView: React.FC = () => {
           </div>
         )
       })}
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
     </div>
   )
 }

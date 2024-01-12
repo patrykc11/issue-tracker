@@ -53,7 +53,7 @@ const IssueForm: React.FC= () => {
       }
       return response.json()
     })
-    .then((data) => {
+    .then(() => {
       setFormData({
         title: '',
         description: '',
@@ -122,6 +122,8 @@ const IssueForm: React.FC= () => {
       </label>
       <br />
       <button type="submit" className={classes.button}>Submit</button>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
     </form>
   );
 };

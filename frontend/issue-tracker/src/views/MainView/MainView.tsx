@@ -1,5 +1,4 @@
-import { useState } from "react";
-import IssueForm, { IssueFormData } from "../../components/IssueForm/IssueForm";
+import IssueForm from "../../components/IssueForm/IssueForm";
 import classes from "./MainView.module.css";
 
 const MainView: React.FC = () => {
