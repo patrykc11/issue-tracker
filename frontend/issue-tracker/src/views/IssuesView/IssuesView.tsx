@@ -5,11 +5,12 @@ const IssuesView: React.FC = () => {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
+  const [selectedStatus, setSelectedStatus] = useState<string>('open');
 
   useEffect(() => {
     setLoading(true);
 
-    fetch('http://34.0.241.201:3000/issues/all')
+    fetch('http://34.116.174.69/issues/all')
     .then(response => {
       if(!response.ok) {
         throw new Error('Something went wrong!');
@@ -26,9 +27,40 @@ const IssuesView: React.FC = () => {
     })
   }, [])
 
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setLoading(true);
+    const newStatus = event.target.value;
+    setSelectedStatus(newStatus);
+
+    fetch(`http://34.116.174.69/issues/all/${newStatus}`)
+      .then((response) => {
+        if(!response.ok) {
+          throw new Error('Something went wrong!');
+        }
+        return response.json()
+      })
+      .then((data) => {
+        setResults(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
+  };
+
+
   return (
     <div className={classes.wrapper}>
       <h1>Existing Issues</h1>
+
+      <div>
+        <label>Status:</label>
+        <select value={selectedStatus} onChange={handleStatusChange}>
+          <option value="open">Open</option>
+          <option value="close">Close</option>
+        </select>
+      </div>
 
       {results.length > 0 && results.map((result) => {
         return (
