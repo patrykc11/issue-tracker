@@ -8,13 +8,12 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT
 const helmet = require('helmet')
-const cors = require('cors') // Dodano obsługę CORS
+const cors = require('cors')
 const logger = require('./src/utils/logger')
 const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('./swagger')
 const issue = require('./src/routes/issue')
 
-// Dodano obsługę CORS
 app.use(cors())
 
 app.use(express.static(path.join(__dirname, 'views')))
